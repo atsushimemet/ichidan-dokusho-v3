@@ -1,11 +1,18 @@
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { BookRecommendation } from '@/lib/recommendations'
 
 interface BookCardProps {
   book: BookRecommendation
+  showAlternatives?: boolean
 }
 
-export default function BookCard({ book }: BookCardProps) {
+export default function BookCard({ book, showAlternatives = true }: BookCardProps) {
+  const router = useRouter()
+
+  const handleSeeAlternatives = () => {
+    router.push(`/alternatives/${book.id}`)
+  }
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden max-w-2xl mx-auto">
       <div className="md:flex">
@@ -40,18 +47,23 @@ export default function BookCard({ book }: BookCardProps) {
               {book.reason}
             </p>
           </div>
-          <div className="flex space-x-4 mt-6">
+          <div className={`${showAlternatives ? 'flex space-x-4' : 'flex'} mt-6`}>
             <a
               href={book.amazonUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 bg-primary-600 text-white text-center py-3 px-6 rounded-lg font-semibold hover:bg-primary-700 transition-colors"
+              className={`${showAlternatives ? 'flex-1' : 'w-full'} bg-primary-600 text-white text-center py-3 px-6 rounded-lg font-semibold hover:bg-primary-700 transition-colors`}
             >
               いますぐ1行読む
             </a>
-            <button className="flex-1 border border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:bg-gray-50 transition-colors">
-              他の本も見る
-            </button>
+            {showAlternatives && (
+              <button 
+                onClick={handleSeeAlternatives}
+                className="flex-1 border border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+              >
+                他の本も見る
+              </button>
+            )}
           </div>
         </div>
       </div>

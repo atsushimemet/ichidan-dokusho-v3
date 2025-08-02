@@ -16,7 +16,7 @@ export default function RecommendationPage({ params }: RecommendationPageProps) 
 
   useEffect(() => {
     // In a real app, you would fetch the recommendation from the API
-    // For now, we'll use a mock recommendation
+    // For now, we'll use a mock recommendation and store it for alternatives
     const mockRecommendation: BookRecommendation = {
       id: 'business-1',
       title: '7つの習慣',
@@ -27,6 +27,9 @@ export default function RecommendationPage({ params }: RecommendationPageProps) 
       genre: 'ビジネス・自己啓発',
       reason: 'あなたの回答から、成長志向で時間を有効活用したい方にぴったりの一冊です。'
     }
+    
+    // Store current recommendation for alternatives page
+    sessionStorage.setItem('currentRecommendation', JSON.stringify(mockRecommendation))
     
     setRecommendation(mockRecommendation)
     setLoading(false)

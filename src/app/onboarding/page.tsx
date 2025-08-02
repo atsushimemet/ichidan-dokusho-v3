@@ -73,6 +73,8 @@ export default function OnboardingPage() {
         
         if (response.ok) {
           const result = await response.json()
+          // Store answers in sessionStorage for alternatives page
+          sessionStorage.setItem('onboardingAnswers', JSON.stringify(newAnswers))
           router.push(`/recommendation/${result.recommendationId}`)
         }
       } catch (error) {

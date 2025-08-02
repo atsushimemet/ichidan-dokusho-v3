@@ -11,13 +11,8 @@ export interface BookRecommendation {
   reason: string
 }
 
-export function getBookRecommendation(answers: OnboardingAnswer[]): BookRecommendation {
-  const timeAnswer = answers.find(a => a.questionId === '1')?.answer
-  const genreAnswer = answers.find(a => a.questionId === '2')?.answer
-  const purposeAnswer = answers.find(a => a.questionId === '3')?.answer
-
-  // Simple recommendation logic based on answers
-  const recommendations: Record<string, BookRecommendation> = {
+// Expanded recommendations database
+const ALL_RECOMMENDATIONS: Record<string, BookRecommendation> = {
     'business_short': {
       id: 'business-1',
       title: '7つの習慣',
@@ -57,25 +52,136 @@ export function getBookRecommendation(answers: OnboardingAnswer[]): BookRecommen
       description: '人間関係の古典的名著',
       genre: '実用書・ハウツー',
       reason: '実践的な人間関係のスキルが身につく永遠の名著です。'
+    },
+    'business_alt1': {
+      id: 'business-3',
+      title: '思考は現実化する',
+      author: 'ナポレオン・ヒル',
+      amazonUrl: 'https://www.amazon.co.jp/dp/4877710515',
+      imageUrl: 'https://m.media-amazon.com/images/I/51bqFpZ8NeL.jpg',
+      description: '成功哲学の原点となる不朽の名作',
+      genre: 'ビジネス・自己啓発',
+      reason: '目標設定と達成のための具体的な方法論が学べます。'
+    },
+    'business_alt2': {
+      id: 'business-4',
+      title: '金持ち父さん 貧乏父さん',
+      author: 'ロバート・キヨサキ',
+      amazonUrl: 'https://www.amazon.co.jp/dp/4480864245',
+      imageUrl: 'https://m.media-amazon.com/images/I/51wqHCHOVpL.jpg',
+      description: 'お金と投資の本質を学ぶベストセラー',
+      genre: 'ビジネス・自己啓発',
+      reason: 'お金に対する考え方を根本から変える一冊です。'
+    },
+    'novel_alt1': {
+      id: 'novel-2',
+      title: '火花',
+      author: '又吉直樹',
+      amazonUrl: 'https://www.amazon.co.jp/dp/4167906112',
+      imageUrl: 'https://m.media-amazon.com/images/I/41VrFD+7sCL.jpg',
+      description: '芥川賞受賞作。お笑い芸人の青春を描いた話題作',
+      genre: '小説・エッセイ',
+      reason: '現代の若者の心情を繊細に描いた感動的な作品です。'
+    },
+    'novel_alt2': {
+      id: 'novel-3',
+      title: '色彩を持たない多崎つくると、彼の巡礼の年',
+      author: '村上春樹',
+      amazonUrl: 'https://www.amazon.co.jp/dp/4163821406',
+      imageUrl: 'https://m.media-amazon.com/images/I/41KjHhT6VzL.jpg',
+      description: '友情と喪失をテーマにした現代文学の傑作',
+      genre: '小説・エッセイ',
+      reason: '人間関係の複雑さと成長を描いた深い物語です。'
+    },
+    'practical_alt1': {
+      id: 'practical-2',
+      title: 'マンガでわかる！誰とでも15分以上 会話がとぎれない！話し方',
+      author: '野口敏',
+      amazonUrl: 'https://www.amazon.co.jp/dp/4799105566',
+      imageUrl: 'https://m.media-amazon.com/images/I/51ysNBQtujL.jpg',
+      description: 'コミュニケーション力を向上させる実践的ガイド',
+      genre: '実用書・ハウツー',
+      reason: '日常のコミュニケーションが劇的に改善します。'
+    },
+    'philosophy': {
+      id: 'philosophy-1',
+      title: '嫌われる勇気',
+      author: '岸見一郎・古賀史健',
+      amazonUrl: 'https://www.amazon.co.jp/dp/4478025819',
+      imageUrl: 'https://m.media-amazon.com/images/I/51Mi4QH1jML.jpg',
+      description: 'アドラー心理学を分かりやすく解説したベストセラー',
+      genre: '歴史・哲学',
+      reason: '自分らしく生きるための心理学的アプローチが学べます。'
     }
   }
+
+export function getBookRecommendation(answers: OnboardingAnswer[]): BookRecommendation {
+  const timeAnswer = answers.find(a => a.questionId === '1')?.answer
+  const genreAnswer = answers.find(a => a.questionId === '2')?.answer
+  const purposeAnswer = answers.find(a => a.questionId === '3')?.answer
 
   // Recommendation logic
   if (genreAnswer?.includes('ビジネス')) {
     if (timeAnswer?.includes('5分') || timeAnswer?.includes('15')) {
-      return recommendations.business_short
+      return ALL_RECOMMENDATIONS.business_short
     }
-    return recommendations.business_long
+    return ALL_RECOMMENDATIONS.business_long
   }
   
   if (genreAnswer?.includes('小説')) {
-    return recommendations.novel_relax
+    return ALL_RECOMMENDATIONS.novel_relax
   }
   
   if (genreAnswer?.includes('実用書')) {
-    return recommendations.practical
+    return ALL_RECOMMENDATIONS.practical
+  }
+  
+  if (genreAnswer?.includes('歴史・哲学')) {
+    return ALL_RECOMMENDATIONS.philosophy
   }
 
   // Default recommendation
-  return recommendations.business_short
+  return ALL_RECOMMENDATIONS.business_short
+}
+
+export function getAlternativeRecommendations(currentBookId: string, answers: OnboardingAnswer[]): BookRecommendation[] {
+  const genreAnswer = answers.find(a => a.questionId === '2')?.answer
+  const alternatives: BookRecommendation[] = []
+
+  // Get genre-specific alternatives
+  if (genreAnswer?.includes('ビジネス')) {
+    alternatives.push(
+      ALL_RECOMMENDATIONS.business_alt1,
+      ALL_RECOMMENDATIONS.business_alt2,
+      ALL_RECOMMENDATIONS.business_long
+    )
+  } else if (genreAnswer?.includes('小説')) {
+    alternatives.push(
+      ALL_RECOMMENDATIONS.novel_alt1,
+      ALL_RECOMMENDATIONS.novel_alt2,
+      ALL_RECOMMENDATIONS.business_short
+    )
+  } else if (genreAnswer?.includes('実用書')) {
+    alternatives.push(
+      ALL_RECOMMENDATIONS.practical_alt1,
+      ALL_RECOMMENDATIONS.business_short,
+      ALL_RECOMMENDATIONS.philosophy
+    )
+  } else if (genreAnswer?.includes('歴史・哲学')) {
+    alternatives.push(
+      ALL_RECOMMENDATIONS.philosophy,
+      ALL_RECOMMENDATIONS.business_short,
+      ALL_RECOMMENDATIONS.novel_relax
+    )
+  } else {
+    // Default alternatives
+    alternatives.push(
+      ALL_RECOMMENDATIONS.business_alt1,
+      ALL_RECOMMENDATIONS.novel_relax,
+      ALL_RECOMMENDATIONS.practical
+    )
+  }
+
+  // Filter out the current book and return up to 3 alternatives
+  return alternatives.filter(book => book.id !== currentBookId).slice(0, 3)
 }
