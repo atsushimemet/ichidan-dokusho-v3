@@ -30,6 +30,7 @@ export default function RecommendationPage({ params }: RecommendationPageProps) 
     
     // Store current recommendation for alternatives page
     sessionStorage.setItem('currentRecommendation', JSON.stringify(mockRecommendation))
+    sessionStorage.setItem('originalRecommendationId', mockRecommendation.id)
     
     setRecommendation(mockRecommendation)
     setLoading(false)

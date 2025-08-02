@@ -48,7 +48,27 @@ export default function AlternativesPage({ params }: AlternativesPageProps) {
   }
 
   const handleBackToRecommendation = () => {
-    router.back()
+    // Get the original recommendation ID from sessionStorage
+    try {
+      const originalId = sessionStorage.getItem('originalRecommendationId')
+      if (originalId) {
+        router.push(`/recommendation/${originalId}`)
+        return
+      }
+      
+      // Fallback: try to get from stored recommendation object
+      const storedRecommendation = sessionStorage.getItem('currentRecommendation')
+      if (storedRecommendation) {
+        const recommendation = JSON.parse(storedRecommendation)
+        router.push(`/recommendation/${recommendation.id}`)
+        return
+      }
+    } catch (error) {
+      console.error('Failed to parse stored recommendation:', error)
+    }
+    
+    // Final fallback: use business-1 (7つの習慣) as default
+    router.push('/recommendation/business-1')
   }
 
   if (loading) {
