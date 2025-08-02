@@ -39,13 +39,6 @@ export default function AlternativesPage({ params }: AlternativesPageProps) {
     setLoading(false)
   }, [params.id])
 
-  const handleNextBook = () => {
-    if (currentIndex < allBooks.length - 1) {
-      setCurrentIndex(currentIndex + 1)
-    } else {
-      setCurrentIndex(1) // Loop back to first alternative (skip original book at index 0)
-    }
-  }
 
   const handleBackToRecommendation = () => {
     // Get the original recommendation ID from sessionStorage
@@ -117,22 +110,13 @@ export default function AlternativesPage({ params }: AlternativesPageProps) {
 
         <BookCard book={currentBook} showAlternatives={false} />
 
-        <div className="flex justify-center space-x-4 mt-8">
+        <div className="flex justify-center mt-8">
           <button
             onClick={handleBackToRecommendation}
             className="bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors"
           >
             最初の推薦に戻る
           </button>
-          
-          {allBooks.length > 1 && (
-            <button
-              onClick={handleNextBook}
-              className="bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors"
-            >
-              {currentIndex < allBooks.length - 1 ? '次の本を見る' : '最初の本に戻る'}
-            </button>
-          )}
         </div>
 
         {allBooks.length > 1 && (
