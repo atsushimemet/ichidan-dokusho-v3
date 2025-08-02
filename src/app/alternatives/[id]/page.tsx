@@ -64,6 +64,10 @@ export default function AlternativesPage({ params }: AlternativesPageProps) {
     router.push('/recommendation/business-1')
   }
 
+  const handleStartReading = () => {
+    router.push('/reading')
+  }
+
   if (loading) {
     return (
       <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
@@ -111,12 +115,21 @@ export default function AlternativesPage({ params }: AlternativesPageProps) {
         <BookCard book={currentBook} showAlternatives={false} />
 
         <div className="flex justify-center mt-8">
-          <button
-            onClick={handleBackToRecommendation}
-            className="bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors"
-          >
-            最初の推薦に戻る
-          </button>
+          {currentIndex === 0 ? (
+            <button
+              onClick={handleBackToRecommendation}
+              className="bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors"
+            >
+              最初の推薦に戻る
+            </button>
+          ) : (
+            <button
+              onClick={handleStartReading}
+              className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
+            >
+              読書記録を始める
+            </button>
+          )}
         </div>
 
         {allBooks.length > 1 && (
