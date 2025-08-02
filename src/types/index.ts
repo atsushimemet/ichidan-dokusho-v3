@@ -16,9 +16,9 @@ export interface Book {
   author: string
   isbn?: string
   amazonUrl: string
-  imageUrl?: string
   description?: string
   genre?: string
+  // imageUrl?: string // TODO: 将来的に実装予定
 }
 
 export interface ReadingRecord {

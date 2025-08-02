@@ -5,10 +5,10 @@ export interface BookRecommendation {
   title: string
   author: string
   amazonUrl: string
-  imageUrl: string
   description: string
   genre: string
   reason: string
+  // imageUrl: string // TODO: 将来的に実装予定
 }
 
 // Expanded recommendations database
@@ -18,7 +18,6 @@ const ALL_RECOMMENDATIONS: Record<string, BookRecommendation> = {
       title: '7つの習慣',
       author: 'スティーブン・R・コヴィー',
       amazonUrl: 'https://www.amazon.co.jp/dp/4906638015',
-      imageUrl: 'https://m.media-amazon.com/images/I/51wsp-ZEPAL.jpg',
       description: '人生を変える永続的な幸福の原則',
       genre: 'ビジネス・自己啓発',
       reason: 'スキマ時間で読めて、人生とビジネスに直結する実践的な内容です。'
@@ -28,7 +27,6 @@ const ALL_RECOMMENDATIONS: Record<string, BookRecommendation> = {
       title: 'FACTFULNESS',
       author: 'ハンス・ロスリング',
       amazonUrl: 'https://www.amazon.co.jp/dp/4822262545',
-      imageUrl: 'https://m.media-amazon.com/images/I/51XFU1M1VBL.jpg',
       description: '10の思い込みを乗り越え、データを基に世界を正しく見る習慣',
       genre: 'ビジネス・自己啓発',
       reason: 'データに基づいた思考法を身につけ、ビジネスに活かせます。'
@@ -38,7 +36,6 @@ const ALL_RECOMMENDATIONS: Record<string, BookRecommendation> = {
       title: 'コンビニ人間',
       author: '村田沙耶香',
       amazonUrl: 'https://www.amazon.co.jp/dp/4163905162',
-      imageUrl: 'https://m.media-amazon.com/images/I/51QNjYjgweL.jpg',
       description: '芥川賞受賞作。現代社会の違和感を描いた話題作',
       genre: '小説・エッセイ',
       reason: '短時間で読めて、現代社会について考えさせられる作品です。'
@@ -48,7 +45,6 @@ const ALL_RECOMMENDATIONS: Record<string, BookRecommendation> = {
       title: '人を動かす',
       author: 'デール・カーネギー',
       amazonUrl: 'https://www.amazon.co.jp/dp/4422100513',
-      imageUrl: 'https://m.media-amazon.com/images/I/51E1gCZhKxL.jpg',
       description: '人間関係の古典的名著',
       genre: '実用書・ハウツー',
       reason: '実践的な人間関係のスキルが身につく永遠の名著です。'
@@ -58,7 +54,6 @@ const ALL_RECOMMENDATIONS: Record<string, BookRecommendation> = {
       title: '思考は現実化する',
       author: 'ナポレオン・ヒル',
       amazonUrl: 'https://www.amazon.co.jp/dp/4877710515',
-      imageUrl: 'https://m.media-amazon.com/images/I/51bqFpZ8NeL.jpg',
       description: '成功哲学の原点となる不朽の名作',
       genre: 'ビジネス・自己啓発',
       reason: '目標設定と達成のための具体的な方法論が学べます。'
@@ -68,7 +63,6 @@ const ALL_RECOMMENDATIONS: Record<string, BookRecommendation> = {
       title: '金持ち父さん 貧乏父さん',
       author: 'ロバート・キヨサキ',
       amazonUrl: 'https://www.amazon.co.jp/dp/4480864245',
-      imageUrl: 'https://m.media-amazon.com/images/I/51wqHCHOVpL.jpg',
       description: 'お金と投資の本質を学ぶベストセラー',
       genre: 'ビジネス・自己啓発',
       reason: 'お金に対する考え方を根本から変える一冊です。'
@@ -78,7 +72,6 @@ const ALL_RECOMMENDATIONS: Record<string, BookRecommendation> = {
       title: '火花',
       author: '又吉直樹',
       amazonUrl: 'https://www.amazon.co.jp/dp/4167906112',
-      imageUrl: 'https://m.media-amazon.com/images/I/41VrFD+7sCL.jpg',
       description: '芥川賞受賞作。お笑い芸人の青春を描いた話題作',
       genre: '小説・エッセイ',
       reason: '現代の若者の心情を繊細に描いた感動的な作品です。'
@@ -88,7 +81,6 @@ const ALL_RECOMMENDATIONS: Record<string, BookRecommendation> = {
       title: '色彩を持たない多崎つくると、彼の巡礼の年',
       author: '村上春樹',
       amazonUrl: 'https://www.amazon.co.jp/dp/4163821406',
-      imageUrl: 'https://m.media-amazon.com/images/I/41KjHhT6VzL.jpg',
       description: '友情と喪失をテーマにした現代文学の傑作',
       genre: '小説・エッセイ',
       reason: '人間関係の複雑さと成長を描いた深い物語です。'
@@ -98,7 +90,6 @@ const ALL_RECOMMENDATIONS: Record<string, BookRecommendation> = {
       title: 'マンガでわかる！誰とでも15分以上 会話がとぎれない！話し方',
       author: '野口敏',
       amazonUrl: 'https://www.amazon.co.jp/dp/4799105566',
-      imageUrl: 'https://m.media-amazon.com/images/I/51ysNBQtujL.jpg',
       description: 'コミュニケーション力を向上させる実践的ガイド',
       genre: '実用書・ハウツー',
       reason: '日常のコミュニケーションが劇的に改善します。'
@@ -108,7 +99,6 @@ const ALL_RECOMMENDATIONS: Record<string, BookRecommendation> = {
       title: '嫌われる勇気',
       author: '岸見一郎・古賀史健',
       amazonUrl: 'https://www.amazon.co.jp/dp/4478025819',
-      imageUrl: 'https://m.media-amazon.com/images/I/51Mi4QH1jML.jpg',
       description: 'アドラー心理学を分かりやすく解説したベストセラー',
       genre: '歴史・哲学',
       reason: '自分らしく生きるための心理学的アプローチが学べます。'

@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { BookRecommendation } from '@/lib/recommendations'
 
@@ -15,18 +14,7 @@ export default function BookCard({ book, showAlternatives = true }: BookCardProp
   }
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden max-w-2xl mx-auto">
-      <div className="md:flex">
-        <div className="md:flex-shrink-0">
-          <div className="h-64 w-full md:w-48 relative">
-            <Image
-              src={book.imageUrl}
-              alt={book.title}
-              fill
-              className="object-cover"
-            />
-          </div>
-        </div>
-        <div className="p-8">
+      <div className="p-8">
           <div className="uppercase tracking-wide text-sm text-primary-500 font-semibold">
             {book.genre}
           </div>
@@ -65,7 +53,6 @@ export default function BookCard({ book, showAlternatives = true }: BookCardProp
               </button>
             )}
           </div>
-        </div>
       </div>
     </div>
   )
