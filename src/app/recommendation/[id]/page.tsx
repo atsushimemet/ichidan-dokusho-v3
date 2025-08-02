@@ -22,7 +22,6 @@ export default function RecommendationPage({ params }: RecommendationPageProps) 
       title: '7つの習慣',
       author: 'スティーブン・R・コヴィー',
       amazonUrl: 'https://www.amazon.co.jp/dp/4906638015',
-      imageUrl: 'https://m.media-amazon.com/images/I/51wsp-ZEPAL.jpg',
       description: '人生を変える永続的な幸福の原則',
       genre: 'ビジネス・自己啓発',
       reason: 'あなたの回答から、成長志向で時間を有効活用したい方にぴったりの一冊です。'
@@ -71,17 +70,24 @@ export default function RecommendationPage({ params }: RecommendationPageProps) 
           <p className="text-gray-600">
             質問への回答をもとに、最適な本をお選びしました
           </p>
+          <div className="mt-4 h-6">
+            {/* ページネーション表示エリアの高さを確保（代替書籍ページとの高さ統一） */}
+          </div>
         </div>
 
         <BookCard book={recommendation} />
 
-        <div className="text-center mt-8">
+        <div className="flex justify-center mt-8">
           <button
             onClick={handleStartReading}
             className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
           >
             読書記録を始める
           </button>
+        </div>
+
+        <div className="h-12 mt-6">
+          {/* ページネーションドット表示エリアの高さを確保（代替書籍ページとの高さ統一） */}
         </div>
       </div>
     </main>
