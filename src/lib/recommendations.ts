@@ -144,44 +144,49 @@ export function getBookRecommendation(answers: OnboardingAnswer[]): BookRecommen
   return ALL_RECOMMENDATIONS.business_short
 }
 
-export function getAlternativeRecommendations(currentBookId: string, answers: OnboardingAnswer[]): BookRecommendation[] {
+export function getAllRecommendationsWithOriginal(currentBookId: string, answers: OnboardingAnswer[]): BookRecommendation[] {
   const genreAnswer = answers.find(a => a.questionId === '2')?.answer
-  const alternatives: BookRecommendation[] = []
+  const recommendations: BookRecommendation[] = []
 
-  // Get genre-specific alternatives
+  // Get genre-specific recommendations including the original
   if (genreAnswer?.includes('ビジネス')) {
-    alternatives.push(
-      ALL_RECOMMENDATIONS.business_alt1,
-      ALL_RECOMMENDATIONS.business_alt2,
-      ALL_RECOMMENDATIONS.business_long
+    recommendations.push(
+      ALL_RECOMMENDATIONS.business_short, // 7つの習慣 (original)
+      ALL_RECOMMENDATIONS.business_alt1,  // 思考は現実化する
+      ALL_RECOMMENDATIONS.business_alt2   // 金持ち父さん 貧乏父さん
     )
   } else if (genreAnswer?.includes('小説')) {
-    alternatives.push(
-      ALL_RECOMMENDATIONS.novel_alt1,
-      ALL_RECOMMENDATIONS.novel_alt2,
-      ALL_RECOMMENDATIONS.business_short
+    recommendations.push(
+      ALL_RECOMMENDATIONS.novel_relax,    // コンビニ人間 (original)
+      ALL_RECOMMENDATIONS.novel_alt1,     // 火花
+      ALL_RECOMMENDATIONS.novel_alt2      // 色彩を持たない多崎つくると...
     )
   } else if (genreAnswer?.includes('実用書')) {
-    alternatives.push(
-      ALL_RECOMMENDATIONS.practical_alt1,
-      ALL_RECOMMENDATIONS.business_short,
-      ALL_RECOMMENDATIONS.philosophy
+    recommendations.push(
+      ALL_RECOMMENDATIONS.practical,      // 人を動かす (original)
+      ALL_RECOMMENDATIONS.practical_alt1, // マンガでわかる！話し方
+      ALL_RECOMMENDATIONS.business_short  // 7つの習慣
     )
   } else if (genreAnswer?.includes('歴史・哲学')) {
-    alternatives.push(
-      ALL_RECOMMENDATIONS.philosophy,
-      ALL_RECOMMENDATIONS.business_short,
-      ALL_RECOMMENDATIONS.novel_relax
+    recommendations.push(
+      ALL_RECOMMENDATIONS.philosophy,     // 嫌われる勇気 (original)
+      ALL_RECOMMENDATIONS.business_short, // 7つの習慣
+      ALL_RECOMMENDATIONS.novel_relax     // コンビニ人間
     )
   } else {
-    // Default alternatives
-    alternatives.push(
-      ALL_RECOMMENDATIONS.business_alt1,
-      ALL_RECOMMENDATIONS.novel_relax,
-      ALL_RECOMMENDATIONS.practical
+    // Default recommendations
+    recommendations.push(
+      ALL_RECOMMENDATIONS.business_short, // 7つの習慣 (original)
+      ALL_RECOMMENDATIONS.business_alt1,  // 思考は現実化する
+      ALL_RECOMMENDATIONS.novel_relax     // コンビニ人間
     )
   }
 
-  // Filter out the current book and return up to 3 alternatives
-  return alternatives.filter(book => book.id !== currentBookId).slice(0, 3)
+  return recommendations.slice(0, 3)
+}
+
+export function getAlternativeRecommendations(currentBookId: string, answers: OnboardingAnswer[]): BookRecommendation[] {
+  const allRecommendations = getAllRecommendationsWithOriginal(currentBookId, answers)
+  // Filter out the current book and return alternatives only
+  return allRecommendations.filter(book => book.id !== currentBookId)
 }

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import BookCard from '@/components/recommendation/BookCard'
-import { BookRecommendation, getAlternativeRecommendations } from '@/lib/recommendations'
+import { BookRecommendation, getAllRecommendationsWithOriginal } from '@/lib/recommendations'
 import { OnboardingAnswer } from '@/types'
 
 interface AlternativesPageProps {
@@ -13,8 +13,8 @@ interface AlternativesPageProps {
 export default function AlternativesPage({ params }: AlternativesPageProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [alternatives, setAlternatives] = useState<BookRecommendation[]>([])
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [allBooks, setAllBooks] = useState<BookRecommendation[]>([])
+  const [currentIndex, setCurrentIndex] = useState(1) // Start from index 1 (2nd book)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -34,16 +34,16 @@ export default function AlternativesPage({ params }: AlternativesPageProps) {
       console.error('Failed to parse stored answers:', error)
     }
 
-    const alternativeBooks = getAlternativeRecommendations(params.id, answers)
-    setAlternatives(alternativeBooks)
+    const allRecommendations = getAllRecommendationsWithOriginal(params.id, answers)
+    setAllBooks(allRecommendations)
     setLoading(false)
   }, [params.id])
 
   const handleNextBook = () => {
-    if (currentIndex < alternatives.length - 1) {
+    if (currentIndex < allBooks.length - 1) {
       setCurrentIndex(currentIndex + 1)
     } else {
-      setCurrentIndex(0) // Loop back to first alternative
+      setCurrentIndex(1) // Loop back to first alternative (skip original book at index 0)
     }
   }
 
@@ -82,7 +82,7 @@ export default function AlternativesPage({ params }: AlternativesPageProps) {
     )
   }
 
-  if (alternatives.length === 0) {
+  if (allBooks.length === 0) {
     return (
       <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
         <div className="text-center">
@@ -98,7 +98,7 @@ export default function AlternativesPage({ params }: AlternativesPageProps) {
     )
   }
 
-  const currentBook = alternatives[currentIndex]
+  const currentBook = allBooks[currentIndex]
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -111,11 +111,11 @@ export default function AlternativesPage({ params }: AlternativesPageProps) {
             あなたの興味に合わせた別の選択肢をご提案します
           </p>
           <div className="mt-4 text-sm text-gray-500">
-            {currentIndex + 1} / {alternatives.length}
+            {currentIndex + 1} / {allBooks.length}
           </div>
         </div>
 
-        <BookCard book={currentBook} />
+        <BookCard book={currentBook} showAlternatives={false} />
 
         <div className="flex justify-center space-x-4 mt-8">
           <button
@@ -125,19 +125,19 @@ export default function AlternativesPage({ params }: AlternativesPageProps) {
             最初の推薦に戻る
           </button>
           
-          {alternatives.length > 1 && (
+          {allBooks.length > 1 && (
             <button
               onClick={handleNextBook}
               className="bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors"
             >
-              {currentIndex < alternatives.length - 1 ? '次の本を見る' : '最初の本に戻る'}
+              {currentIndex < allBooks.length - 1 ? '次の本を見る' : '最初の本に戻る'}
             </button>
           )}
         </div>
 
-        {alternatives.length > 1 && (
+        {allBooks.length > 1 && (
           <div className="flex justify-center mt-6 space-x-2">
-            {alternatives.map((_, index) => (
+            {allBooks.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
