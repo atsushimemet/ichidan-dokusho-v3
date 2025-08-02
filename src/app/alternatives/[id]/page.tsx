@@ -40,29 +40,6 @@ export default function AlternativesPage({ params }: AlternativesPageProps) {
   }, [params.id])
 
 
-  const handleBackToRecommendation = () => {
-    // Get the original recommendation ID from sessionStorage
-    try {
-      const originalId = sessionStorage.getItem('originalRecommendationId')
-      if (originalId) {
-        router.push(`/recommendation/${originalId}`)
-        return
-      }
-      
-      // Fallback: try to get from stored recommendation object
-      const storedRecommendation = sessionStorage.getItem('currentRecommendation')
-      if (storedRecommendation) {
-        const recommendation = JSON.parse(storedRecommendation)
-        router.push(`/recommendation/${recommendation.id}`)
-        return
-      }
-    } catch (error) {
-      console.error('Failed to parse stored recommendation:', error)
-    }
-    
-    // Final fallback: use business-1 (7つの習慣) as default
-    router.push('/recommendation/business-1')
-  }
 
   const handleStartReading = () => {
     router.push('/reading')
@@ -84,12 +61,6 @@ export default function AlternativesPage({ params }: AlternativesPageProps) {
       <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
         <div className="text-center">
           <p className="text-gray-600">他の推薦本が見つかりませんでした。</p>
-          <button
-            onClick={handleBackToRecommendation}
-            className="mt-4 bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700"
-          >
-            戻る
-          </button>
         </div>
       </main>
     )
@@ -115,21 +86,12 @@ export default function AlternativesPage({ params }: AlternativesPageProps) {
         <BookCard book={currentBook} showAlternatives={false} />
 
         <div className="flex justify-center mt-8">
-          {currentIndex === 0 ? (
-            <button
-              onClick={handleBackToRecommendation}
-              className="bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors"
-            >
-              最初の推薦に戻る
-            </button>
-          ) : (
-            <button
-              onClick={handleStartReading}
-              className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
-            >
-              読書記録を始める
-            </button>
-          )}
+          <button
+            onClick={handleStartReading}
+            className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
+          >
+            読書記録を始める
+          </button>
         </div>
 
         {allBooks.length > 1 && (
