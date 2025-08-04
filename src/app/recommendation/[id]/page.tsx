@@ -6,34 +6,39 @@ import BookCard from '@/components/recommendation/BookCard'
 import { BookRecommendation } from '@/lib/recommendations'
 
 interface RecommendationPageProps {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
-export default function RecommendationPage({ params }: RecommendationPageProps) {
+export default async function RecommendationPage({ params }: RecommendationPageProps) {
   const router = useRouter()
   const [recommendation, setRecommendation] = useState<BookRecommendation | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // In a real app, you would fetch the recommendation from the API
-    // For now, we'll use a mock recommendation and store it for alternatives
-    const mockRecommendation: BookRecommendation = {
-      id: 'business-1',
-      title: '7つの習慣',
-      author: 'スティーブン・R・コヴィー',
-      amazonUrl: 'https://www.amazon.co.jp/dp/4906638015',
-      description: '人生を変える永続的な幸福の原則',
-      genre: 'ビジネス・自己啓発',
-      reason: 'あなたの回答から、成長志向で時間を有効活用したい方にぴったりの一冊です。'
+    const initializeRecommendation = async () => {
+      const resolvedParams = await params
+      // In a real app, you would fetch the recommendation from the API
+      // For now, we'll use a mock recommendation and store it for alternatives
+      const mockRecommendation: BookRecommendation = {
+        id: 'business-1',
+        title: '7つの習慣',
+        author: 'スティーブン・R・コヴィー',
+        amazonUrl: 'https://www.amazon.co.jp/dp/4906638015',
+        description: '人生を変える永続的な幸福の原則',
+        genre: 'ビジネス・自己啓発',
+        reason: 'あなたの回答から、成長志向で時間を有効活用したい方にぴったりの一冊です。'
+      }
+      
+      // Store current recommendation for alternatives page
+      sessionStorage.setItem('currentRecommendation', JSON.stringify(mockRecommendation))
+      sessionStorage.setItem('originalRecommendationId', mockRecommendation.id)
+      
+      setRecommendation(mockRecommendation)
+      setLoading(false)
     }
-    
-    // Store current recommendation for alternatives page
-    sessionStorage.setItem('currentRecommendation', JSON.stringify(mockRecommendation))
-    sessionStorage.setItem('originalRecommendationId', mockRecommendation.id)
-    
-    setRecommendation(mockRecommendation)
-    setLoading(false)
-  }, [params.id])
+
+    initializeRecommendation()
+  }, [params])
 
   const handleStartReading = () => {
     router.push('/reading')

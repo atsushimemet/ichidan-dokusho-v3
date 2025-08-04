@@ -7,10 +7,10 @@ import { BookRecommendation, getAllRecommendationsWithOriginal } from '@/lib/rec
 import { OnboardingAnswer } from '@/types'
 
 interface AlternativesPageProps {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
-export default function AlternativesPage({ params }: AlternativesPageProps) {
+export default async function AlternativesPage({ params }: AlternativesPageProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [allBooks, setAllBooks] = useState<BookRecommendation[]>([])
@@ -18,26 +18,31 @@ export default function AlternativesPage({ params }: AlternativesPageProps) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Get answers from sessionStorage or use defaults
-    let answers: OnboardingAnswer[] = [
-      { questionId: '1', answer: '15〜30分（昼休みなど）' },
-      { questionId: '2', answer: 'ビジネス・自己啓発' },
-      { questionId: '3', answer: 'スキルアップ・成長' }
-    ]
+    const initializeBooks = async () => {
+      const resolvedParams = await params
+      // Get answers from sessionStorage or use defaults
+      let answers: OnboardingAnswer[] = [
+        { questionId: '1', answer: '15〜30分（昼休みなど）' },
+        { questionId: '2', answer: 'ビジネス・自己啓発' },
+        { questionId: '3', answer: 'スキルアップ・成長' }
+      ]
 
-    try {
-      const storedAnswers = sessionStorage.getItem('onboardingAnswers')
-      if (storedAnswers) {
-        answers = JSON.parse(storedAnswers)
+      try {
+        const storedAnswers = sessionStorage.getItem('onboardingAnswers')
+        if (storedAnswers) {
+          answers = JSON.parse(storedAnswers)
+        }
+      } catch (error) {
+        console.error('Failed to parse stored answers:', error)
       }
-    } catch (error) {
-      console.error('Failed to parse stored answers:', error)
+
+      const allRecommendations = getAllRecommendationsWithOriginal(resolvedParams.id, answers)
+      setAllBooks(allRecommendations)
+      setLoading(false)
     }
 
-    const allRecommendations = getAllRecommendationsWithOriginal(params.id, answers)
-    setAllBooks(allRecommendations)
-    setLoading(false)
-  }, [params.id])
+    initializeBooks()
+  }, [params])
 
 
 
