@@ -13,6 +13,10 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 COPY package.json ./
 COPY package-lock.json ./
+
+# Copy Prisma schema before npm ci to ensure postinstall works
+COPY prisma ./prisma
+
 RUN npm ci
 
 COPY . .

@@ -10,7 +10,6 @@
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "db:generate": "prisma generate",
-    "postinstall": "prisma generate",
     "deploy": "npm run build && npm run db:push"
   },
   "dependencies": {
@@ -26,7 +25,7 @@
     "tailwindcss": "^3.4.1",
     "autoprefixer": "^10.0.1",
     "postcss": "^8",
-    "eslint": "^8",
+    "eslint": "^9",
     "eslint-config-next": "14.2.5"
   },
   "devDependencies": {
