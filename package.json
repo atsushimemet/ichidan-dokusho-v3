@@ -13,9 +13,9 @@
     "deploy": "npm run build && npm run db:push"
   },
   "dependencies": {
-    "next": "14.2.5",
-    "react": "^18",
-    "react-dom": "^18",
+    "next": "^15.4.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "next-auth": "^4.24.7",
     "@prisma/client": "^5.16.1",
     "@types/node": "^20",
@@ -26,7 +26,7 @@
     "autoprefixer": "^10.0.1",
     "postcss": "^8",
     "eslint": "^9",
-    "eslint-config-next": "14.2.5"
+    "eslint-config-next": "^15.4.5"
   },
   "devDependencies": {
     "prisma": "^5.16.1"
